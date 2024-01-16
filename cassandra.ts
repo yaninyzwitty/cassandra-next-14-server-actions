@@ -1,5 +1,6 @@
 
 import { Client } from "cassandra-driver";
+import path from "path";
 
 declare global {
   var cassandraClient: Client | undefined;
@@ -16,7 +17,9 @@ export default cassandraDb;
 function createCassandraClient(): Client {
   const newClient = new Client({
     cloud: {
-      secureConnectBundle: process.cwd() + '/secure-connect.zip'
+      secureConnectBundle: path.join(process.cwd(), "secure-connect.zip"),
+
+
     },
     credentials: {
       username: process.env.CASSANDRA_CLIENT_ID!,
