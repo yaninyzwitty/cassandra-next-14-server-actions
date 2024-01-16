@@ -16,7 +16,7 @@ export default cassandraDb;
 function createCassandraClient(): Client {
   const newClient = new Client({
     cloud: {
-      secureConnectBundle: 'secure-connect.zip'
+      secureConnectBundle: process.cwd() + '/secure-connect.zip'
     },
     credentials: {
       username: process.env.CASSANDRA_CLIENT_ID!,
