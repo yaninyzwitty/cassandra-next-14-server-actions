@@ -2,7 +2,6 @@ import cassandraDb from "@/cassandra";
 import { formSchema } from "@/lib/schema";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
-import * as z from 'zod'
 
 export async function GET (req: Request) {
 

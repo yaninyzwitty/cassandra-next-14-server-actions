@@ -7,28 +7,46 @@ import * as z from 'zod'
 
 
 export const todo = async (values: z.infer<typeof formSchema>) => {
-    const { userId } = auth();
+    try {
+        
+        const { userId } = auth();
+    
+        const validatedFields = formSchema.safeParse(values);
+    
+        if (!validatedFields.success) {
+            throw new Error('Invalid fields!');
+        
+    
+    };
+    
+    const todoId = crypto.randomUUID();
+    
+    
+    const { todo  } = validatedFields.data;
+    const query = `INSERT INTO todos (todo_id, todo, user_id) VALUES (?, ?, ?)`;
+    
+    await cassandraDb.execute(query, [todoId, todo, userId], { prepare: true });
 
-    const validatedFields = formSchema.safeParse(values);
+    revalidatePath('/')
 
-    if (!validatedFields.success) {
-        throw new Error('Invalid fields!');
+    return { success: todo }
+
+
+
+
+    } catch (error) {
+        // throw new Error('Something went wrong')
+        console.log('TODO_ACTION_ERROR', error);
+
+        return { error: 'Something went wrong' }
+        
+    };
+
+    revalidatePath('/')
+
     
 
-};
 
-const todoId = crypto.randomUUID();
-
-
-const { todo  } = validatedFields.data;
-const query = `INSERT INTO todos (todo_id, todo, user_id) VALUES (?, ?, ?)`;
-
-await cassandraDb.execute(query, [todoId, todo, userId], { prepare: true });
-revalidatePath('/')
-
-
-
-return { success: todo }
 
 
 

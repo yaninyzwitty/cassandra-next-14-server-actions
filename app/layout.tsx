@@ -5,6 +5,7 @@ import {ClerkProvider} from "@clerk/nextjs";
 
 import {Toaster} from "sonner";
 import QueryProvider from "@/components/provider/query-provider";
+import {queryTodos} from "@/actions/todos";
 
 // const inter = Inter({subsets: ["latin"]});
 const inter = Inter({subsets: ["latin"]});
